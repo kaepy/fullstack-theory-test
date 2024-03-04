@@ -1,0 +1,16 @@
+{
+  "name": "fullstack-theory-test",
+  "version": "1.0.0",
+  "description": "NoteApp E2E testing with Cypress",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "author": "Henna Tuunainen",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.6.6"
+  }
+}
