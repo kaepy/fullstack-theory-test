@@ -20,6 +20,23 @@ describe('Note ', function () {
     cy.get('#login-button').click()
 
     //cy.contains('Testi Testinen logged in')
-  }) 
+  })
+
+  describe('when logged in', function () {
+    beforeEach(function () {
+      cy.contains('login').click()
+      cy.get('#username').type('testi')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
+    })
+
+    it('a new note can be created', function () {
+      cy.contains('new note').click()
+      cy.get('#note-input').type('a note created by cypress')
+      cy.contains('save').click()
+
+      cy.contains('a note created by cypress')
+    })
+  })
 
 })
