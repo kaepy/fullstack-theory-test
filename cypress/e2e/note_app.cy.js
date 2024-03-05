@@ -1,15 +1,20 @@
 describe('Note ', function () {
 
   beforeEach(function () {
-    cy.request('POST', 'http://localhost:3001/api/testing/reset')
+    //cy.request('POST', 'http://localhost:3001/api/testing/reset')
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
+    
     const user = {
       name: 'Himmeli Hommeli',
       username: 'himmeli',
       password: 'salainen'
     }
-    cy.request('POST', 'http://localhost:3001/api/users/', user)
 
-    cy.visit('http://localhost:3000')
+    //cy.request('POST', 'http://localhost:3001/api/users/', user)
+    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+
+    //cy.visit('http://localhost:3000')
+    cy.visit('')
   })
 
   it('front page can be opened', function () {
@@ -30,7 +35,7 @@ describe('Note ', function () {
     //cy.contains('Testi Testinen logged in')
   })
 
-  it.only('login fails with wrong password', function () {
+  it('login fails with wrong password', function () {
     cy.contains('login').click()
     cy.get('#username').type('himmeli')
     cy.get('#password').type('wrong')
@@ -42,9 +47,9 @@ describe('Note ', function () {
     //cy.get('.error').should('have.css', 'border-style', 'solid')
 
     cy.get('.error')
-    .should('contain', 'wrong credentials')
-    .and('have.css', 'color', 'rgb(255, 0, 0)')
-    .and('have.css', 'border-style', 'solid')
+      .should('contain', 'wrong credentials')
+      .and('have.css', 'color', 'rgb(255, 0, 0)')
+      .and('have.css', 'border-style', 'solid')
 
     //cy.get('html').should('not.contain', 'Himmeli Hommeli logged in')
     //cy.contains('Himmeli Hommeli logged in').should('not.exist')
@@ -52,10 +57,21 @@ describe('Note ', function () {
 
   describe('when logged in', function () {
     beforeEach(function () {
-      cy.contains('login').click()
-      cy.get('#username').type('himmeli')
-      cy.get('#password').type('salainen')
-      cy.get('#login-button').click()
+      //cy.contains('login').click()
+      //cy.get('#username').type('himmeli')
+      //cy.get('#password').type('salainen')
+      //cy.get('#login-button').click()
+
+      /*
+      cy.request('POST', 'http://localhost:3001/api/login', {
+        username: 'himmeli', password: 'salainen'
+      }).then(response => {
+        localStorage.setItem('loggedNoteappUser', JSON.stringify(response.body))
+        cy.visit('http://localhost:3000')
+      })
+      */
+
+      cy.login({ username: 'himmeli', password: 'salainen' })
     })
 
     it('a new note can be created', function () {
@@ -68,9 +84,14 @@ describe('Note ', function () {
 
     describe('and a note exists', function () {
       beforeEach(function () {
-        cy.contains('new note').click()
-        cy.get('#note-input').type('another note cypress')
-        cy.contains('save').click()
+        //cy.contains('new note').click()
+        //cy.get('#note-input').type('another note cypress')
+        //cy.contains('save').click()
+
+        cy.createNote({
+          content: 'another note cypress',
+          important: true
+        })
       })
 
       it('it can be made important', function () {
