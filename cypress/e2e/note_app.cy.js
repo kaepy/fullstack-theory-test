@@ -128,6 +128,13 @@ describe('Note ', function () {
         cy.get('@theButton').click()
         cy.get('@theButton').should('contain', 'make not important')
       })
+
+      it('then example', function() {
+        cy.get('button').then( buttons => {
+          console.log('number of buttons', buttons.length)
+          cy.wrap(buttons[0]).click()
+        })
+      })
     })
   })
 
