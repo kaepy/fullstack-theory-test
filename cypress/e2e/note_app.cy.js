@@ -1,6 +1,14 @@
 describe('Note ', function () {
 
   beforeEach(function () {
+    cy.request('POST', 'http://localhost:3001/api/testing/reset')
+    const user = {
+      name: 'Himmeli Hommeli',
+      username: 'himmeli',
+      password: 'salainen'
+    }
+    cy.request('POST', 'http://localhost:3001/api/users/', user)
+
     cy.visit('http://localhost:3000')
   })
 
@@ -15,7 +23,7 @@ describe('Note ', function () {
 
   it('user can login', function () {
     cy.contains('login').click()
-    cy.get('#username').type('testi')
+    cy.get('#username').type('himmeli')
     cy.get('#password').type('salainen')
     cy.get('#login-button').click()
 
@@ -25,7 +33,7 @@ describe('Note ', function () {
   describe('when logged in', function () {
     beforeEach(function () {
       cy.contains('login').click()
-      cy.get('#username').type('testi')
+      cy.get('#username').type('himmeli')
       cy.get('#password').type('salainen')
       cy.get('#login-button').click()
     })
@@ -33,9 +41,27 @@ describe('Note ', function () {
     it('a new note can be created', function () {
       cy.contains('new note').click()
       cy.get('#note-input').type('a note created by cypress')
-      cy.contains('save').click()
+      cy.contains('save').click() // huomaa getin ja containsin ero. containsissa ei pysty käyttämään #save-button id:tä.
 
       cy.contains('a note created by cypress')
+    })
+
+    describe('and a note exists', function () {
+      beforeEach(function () {
+        cy.contains('new note').click()
+        cy.get('#note-input').type('another note cypress')
+        cy.contains('save').click()
+      })
+
+      it('it can be made important', function () {
+        cy.contains('another note cypress')
+          .contains('make not important')
+          .click()
+
+        cy.contains('another note cypress')
+          .contains('make important')
+      })
+
     })
   })
 
