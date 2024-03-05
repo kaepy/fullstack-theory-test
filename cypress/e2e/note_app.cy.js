@@ -3,7 +3,7 @@ describe('Note ', function () {
   beforeEach(function () {
     //cy.request('POST', 'http://localhost:3001/api/testing/reset')
     cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
-    
+
     const user = {
       name: 'Himmeli Hommeli',
       username: 'himmeli',
@@ -88,10 +88,7 @@ describe('Note ', function () {
         //cy.get('#note-input').type('another note cypress')
         //cy.contains('save').click()
 
-        cy.createNote({
-          content: 'another note cypress',
-          important: true
-        })
+        cy.createNote({ content: 'another note cypress', important: true })
       })
 
       it('it can be made important', function () {
@@ -103,6 +100,34 @@ describe('Note ', function () {
           .contains('make important')
       })
 
+    })
+
+    describe.only('and several notes exist', function () {
+      beforeEach(function () {
+        cy.createNote({ content: 'first note', important: false })
+        cy.createNote({ content: 'second note', important: false })
+        cy.createNote({ content: 'third note', important: false })
+      })
+
+      it.skip('one of those can be made important', function () {
+        cy.contains('second note')
+          .contains('make important')
+          .click()
+
+        cy.contains('second note')
+          .contains('make not important')
+      })
+
+      //toimii kun <span>{note.content}</span>
+      it('other of those can be made important', function () {
+        //cy.contains('second note').parent().find('button').click()
+        //cy.contains('second note').parent().find('button')
+        //  .should('contain', 'make not important')
+
+        cy.contains('second note').parent().find('button').as('theButton')
+        cy.get('@theButton').click()
+        cy.get('@theButton').should('contain', 'make not important')
+      })
     })
   })
 
