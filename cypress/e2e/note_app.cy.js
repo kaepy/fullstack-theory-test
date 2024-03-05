@@ -30,6 +30,26 @@ describe('Note ', function () {
     //cy.contains('Testi Testinen logged in')
   })
 
+  it.only('login fails with wrong password', function () {
+    cy.contains('login').click()
+    cy.get('#username').type('himmeli')
+    cy.get('#password').type('wrong')
+    cy.get('#login-button').click()
+
+    //cy.get('.error').contains('wrong credentials')
+    //cy.get('.error').should('contain', 'wrong credentials')
+    //cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
+    //cy.get('.error').should('have.css', 'border-style', 'solid')
+
+    cy.get('.error')
+    .should('contain', 'wrong credentials')
+    .and('have.css', 'color', 'rgb(255, 0, 0)')
+    .and('have.css', 'border-style', 'solid')
+
+    //cy.get('html').should('not.contain', 'Himmeli Hommeli logged in')
+    //cy.contains('Himmeli Hommeli logged in').should('not.exist')
+  })
+
   describe('when logged in', function () {
     beforeEach(function () {
       cy.contains('login').click()

@@ -9,3 +9,7 @@
 - Testit on luonnollisesti mahdollista suorittaa myös komentoriviltä, komennolla cypress run, joka kannattaa halutessa lisätä npm-skriptiksi.
 - Run cloud testfile: npm run cy:run -- --record --spec "cypress/e2e/my-spec.cy.js"
 - Run local testfile: npx cypress run --record --spec "cypress/e2e/my-spec.cy.js"
+- it.only
+- id = #username
+- className = .error
+- Testissä käytetty cy.get('html') tarkoittaa käytännössä koko sovelluksen näkyvillä olevaa sisältöä.
